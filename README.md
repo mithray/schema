@@ -1,7 +1,5 @@
 # Web Three Components
 
-
-
 ## HTML5
 [HTML5 Spec](https://www.w3.org/TR/html/)
 [HTML5 Doctor](http://html5doctor.com/)
