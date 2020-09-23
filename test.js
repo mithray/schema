@@ -1,11 +1,3 @@
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
-const dom = new JSDOM(``, {
-  url: "https://example.org/",
-  referrer: "https://example.com/",
-  contentType: "text/html",
-  includeNodeLocations: true,
-  storageQuota: 10000000
-});
-
-console.log(dom.serialize())
+const pug = require('pug')
+const html = pug.render('h1= title', {title: 'hi'})
+console.log(html)

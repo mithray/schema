@@ -37,3 +37,6 @@
 * [Schema.org](https://schema.org)
 
 * [Does a lot of what I want to do already](https://json-editor.github.io/json-editor/)
+
+https://nystudio107.com/blog/a-pretty-website-isnt-enough
+https://nystudio107.com/blog/annotated-json-ld-structured-data-examples

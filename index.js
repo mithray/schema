@@ -1,4 +1,6 @@
 const fs = require('fs')
+const path = require('path')
+var pug = require('pug')
 var parser = require('fast-xml-parser')
 const c = require('ansi-colors')
 const _ = require('lodash')
@@ -49,6 +51,18 @@ function getAvailableProperties(details){
   return availableProperties
 
 }
+function toArray(obj){
+  const arr = []
+  const keys = Object.keys(obj)
+  const values = Object.values(obj)
+  for (let i = 0; i < keys.length; i++){
+    const subObj = {}
+    subObj.key = keys[i]
+    subObj.value = values[i]
+    arr.push(subObj)
+  }
+  return arr
+}
 async function getJsonldBlock(details, options){
   details = _.merge(default_details, details)
   availableProperties = getAvailableProperties(details)
@@ -78,15 +92,32 @@ async function getJsonldBlock(details, options){
   }
   return jsonld
 }
-function getHtmlBlock(){}
+async function getHtmlBlock(jsObj, options){
+  obj = await getJsonldBlock(jsObj, {wrap: false})
+  const arr = toArray(jsObj)
+  schemaHtmlTemplatePath = path.join(__dirname, 'components', obj['@type'] + '.pug')
+  try{
+    fs.accessSync(schemaHtmlTemplatePath)
+  } catch (e){
+    schemaHtmlTemplatePath = path.join(__dirname, 'components', 'Default' + '.pug')
+    //console.log(e)
+  }
+//console.log('schemaHtmlTemplateExists')
+//console.log(schemaHtmlTemplateExists)
+  const fdata = fs.readFileSync(schemaHtmlTemplatePath,'utf8')
+
+  const htmlstr = pug.render(fdata,{arr,obj})
+  console.log(htmlstr)
+}
+
 function getAllBlocks(){}
 const default_details = {
   "@context": "https://schema.org"
 }
 const details = {
-  "@type": "Book",
-  "name": "1984",
-  "author": "George Orwell"
+  "@type": "WebPage",
+  "breadcrumb": "",
+  "mainEntity": { "@type": "Article" }
 }
 
 
@@ -96,7 +127,8 @@ const schema = {
   ALL: getAllBlocks
 }
 options = { wrap: true }
-const jsonld = schema.JSONLD(details, options)
+//const jsonld = schema.JSONLD(details, options)
 const html = schema.HTML(details, options)
+//const all = schema.ALL(details, options)
 
-jsonld.then(res => console.log(res))
+//jsonld.then( res => console.log(res) )
