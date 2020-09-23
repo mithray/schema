@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	
+	<title>searchFAST</title>
+	
+	<meta name="description" content="Search interface to OCLC FAST Subject Authorities" />
+	<meta name="author" content="OCLC Research" />
+	<meta name="Copyright" content="Copyright OCLC 2011-2019. All Rights Reserved." />
+	<meta name="DC.title" content="searchFAST FAST search Interface" />
+	<meta name="DC.subject" content="Search and explore FAST." />
+	<meta name="DC.creator" content="OCLC Research." />
+	
+	<link rel="shortcut icon" href="images/favicon.png"/>
+
+	<script src="js/jquery-1.5.2.min.js"></script>
+	<script src="js/jquery.ba-hashchange.min.js"></script>
+	<script src="js/fast23.js" type="text/javascript"></script>
+	<script src="js/fastIni17.js" type="text/javascript"></script>
+	<script src="js/fastAutocomplete12.js" type="text/javascript"></script>
+	<script src="js/NACO.js" type="text/javascript"></script>
+	<script src="js/wiki0.js" type="text/javascript"></script>
+	<script src="js/fastCommonFooter.js" type="text/javascript"></script>
+	
+	<script src="js/jquery-ui.min.js" type="text/javascript" ></script>
+	<!--script src="js/jquery.dump.js" type="text/javascript"></script-->
+
+
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.css" > 
+    <link rel="stylesheet" type="text/css" href="css/fastbaseC.css" >
+    <link rel="stylesheet" type="text/css" href="css/searchfast.css" >
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17341906-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+
+<body onload="javascript:setUp();">
+<div id="mainbody">
+	
+    <div id="masthead">
+   		<h1 class="fastsearch"><a href="#">searchFAST</a></h1>
+        <h2>Find FAST Subject Headings</h2>
+    </div><!-- masthead -->
+    
+    <div id="maincontentwrapper">
+    
+    	<div id="homeSearch" class="one shadow">
+        	<h3 class="colhead">Search FAST</h3>
+			 <form id="homeSearchForm2" action="" onsubmit="simpleQuerySet(true, 'same', 0); return false;" >
+             	
+                <fieldset id="homeSearchBox2" >
+                  <div id="indexlistdiv" > </div>
+ 
+                  <!--input id="txtSearch" type="text" value="cats" /-->
+								<div class="ui-widget"> 
+                   <input id="txtSearch2" type="text"  ></input>
+                   </div>
+                 
+                   <input id="btnSearch2" type="submit" value="Search" />
+                </fieldset>
+               
+                <!--a class="advsearch" href="fast-home.html">Advanced Search</a -->
+                <div id="testdiv" > </div>
+              </form>
+              
+    	</div> <!-- homesearch -->
+    	<div id="workarea" >
+        	<div id="workareaintro" style="display:block;" > 
+			   <div id="homeInfo" class="one shadow">
+			      <h3 class="colhead">About FAST Lookup</h3>
+			      <p><div id="messageOfDay" class="aboutmsg" > Info about this service, news, updates... something like that here....</div></p>
+			   </div><!-- homeInfo -->
+         </div><!-- workareaintro -->
+         <div id="workareaactive" style="display:none" >
+            <div class="two4060">
+               <div class="col1 shadow equal">
+                  <h3 class="colhead">FAST Terms</h3>
+                  <div id="sideBarResultsInfo" class="sidebarResultsInfo">
+                     <div id="searchcrumbs">
+                        <p>	<span class="crumblabel">Search results for:</span>"Waiting"</p>
+ 
+                     </div><!-- searchcrumbs -->
+                     <div class="sidebarResultsLimit">
+                        <form name="briefform" id="briefform" >
+                           <fieldset id="typelimit">
+                              <label>Limit Results by:</label>
+                              <!--div id="limitlistdiv" > </div -->
+                               <fieldset id="limitlistdiv" > </fieldset>
+                              
+                           </fieldset>
+                           <!--fieldset id="checklimits">
+                           <label>These need a label</label>
+                              <input type="checkbox" name="addobsolete"  id="addobsolete" onClick="javascript:alert('Later'); return false;">Include Obsolete</input>
+                              <input type="checkbox" name="onlyprovisional"  id="onlyprovisional" onClick="javascript:alert('Later'); return false;" >Provisional Only</input>
+                          </fieldset-->
+                       </form>
+                        
+                        
+                        
+                    </div><!-- sidebarResultsLimit -->
+                     <div class="sidebarResultsNav">
+                        <div class="sidebarResultsCount">
+                          	    Displaying <span class="strong">Waiting</span> of <span class="strong">Waiting</span>
+                        </div><!-- sidebarResultsCount -->  
+                        <div class="sidebarResultsPaging">
+                           <ul>
+                              <li><div id="prevLink">&lt; &lt; Previous</div></li>
+                              <li><div id="nextLink">Next &gt;&gt; </div></li>
+                           </ul>
+                        </div><!-- sidebarResultsPaging -->
+                        <div style="clear:both;"><!-- clear the float which allows this to go to the next line -->
+                           <div class="sidebarResultsPaging">
+                              <ul><li>
+									      <form name="jumpform" id="jumpform" onsubmit="jump();return false;"  style="font-size:85%;padding-bottom:0px;height:18px;border-style:none;" >
+										      <input id="jumpNumber" type="text" size="3"       style="border-style:solid;border-width:1px;border-color:rgb(204,204,204);font-size:12px;height:14px;margin:0px;padding:0px; text-align:center;vertical-align:top;"></input>
+										      <input id="jumpButton" type="submit" value="Jump" style="border-style:solid;border-width:1px;border-color:rgb(204,204,204);font-size:11px;height:16px;margin:0px;padding:0px; font-style:arial;font-weight:bold;color:rgb(102,102,102);" />
+										   </form>
+										</li></ul>
+								   </div><!-- sidebarResultsPaging -->
+							    </div> <!-- clear -->
+
+                     </div><!-- sidebarResultsNav -->
+                  </div><!-- sideBarResultsInfo-->
+                  <div id="sidebarResultsTable2Wrap">
+                  </div><!-- sidebarResultsTable2Wrap -->
+    
+               </div><!-- end col1 -->
+
+               <div class="col2 shadow equal">
+                  <h3 class="colhead">&nbsp;</h3>
+                  <div id="marcview" style="display:none" >
+                         	<div id="viewListDiv"></div><!-- odd ending this with / didnt end the marcview id - needed full /div on ff -->
+                       
+                   </div><!-- end marcview-->
+                  <div class="recordWrapper">
+                                Record here
+                  </div><!-- end recordWrapper-->
+                   <div id="buttonview" >
+                   		<form action="" onClick="javascript:switchFull(); return false;">
+                        	<input id="btnmarcview" type="button" value="view MARC" />
+                        </form>
+                   </div><!-- end buttonview -->
+               </div><!-- end col2 -->
+            </div><!-- end two4060 -->
+
+			</div> <!-- workareaactive -->  
+    	
+    	</div>
+ 	</div><!-- maincontentwrapper-->
+ 
+     <div id="footer" class="clearfix">
+		<div class="two">
+            <div class="col1">
+                <div id="researchtag" class="foot-sec">
+                	 <span class="projecttitle">FAST Lookup</span> is a project of <a href="http://www.oclc.org/research">OCLC Research.</a>
+                </div>
+					 <div class="foot-news">
+                  <div id="footer-news"></div>
+                </div>
+
+                <div class="foot-sec">
+                  <div  id="footLearn">
+                	<a class="foot-info" href="https://www.oclc.org/research/themes/data-science/fast.html">Learn more about the FAST project.</a> <br>
+                	</div>
+                	<div id="footLearnMore">
+						</div>
+                </div>
+                <div class="foot-sec">
+                  <div id="footUpdate"></div>
+                </div>    
+                    
+                <div id="feedback-form" class="foot-sec">
+					     <p>SEND FEEDBACK</p>
+
+                </div>
+                <div id="corpinfo" class="foot-sec last">
+                  <div id="footCopyright"></div>
+                </div> 
+                
+                
+            </div><!-- col1 -->
+            <div class="col2">
+                <div id="fastsuite">
+					<h4>sFAST Projects</h4>
+                   <dl>
+                    	<dt class="fastsearch"><a href="http://fast.oclc.org/searchfast/">searchFAST</a></dt>
+                        <dd>A full feature search interface to the FAST database.</dd>
+                    </dl>
+                     <!--dl>
+                    	<dt class="mapfast"><a href="http://experimental.worldcat.org/mapfast/" target="_blank">mapFAST</a></dt>
+                        <dd>mapFAST is a Google Maps mashup prototype designed to provide map based access to bibliographic records using FAST geographic and event authorities. Also available in Mobile versions.</dd>
+                    </dl-->
+                	<dl>
+                    	<dt class="fastconverter"><a href="http://experimental.worldcat.org/fast/fastconverter/" target="_blank">FAST Converter</a></dt>
+                        <dd>The FAST Converter is a Web interface for the conversion of LCSH headings to FAST headings.</dd>
+                    </dl>
+                    <dl>
+                    	<dt class="linkeddata"><a href="http://experimental.worldcat.org/fast/">FAST Linked Data</a></dt>
+                        <dd>FAST as a Linked Data service to interact with the Semantic Web.</dd>
+                    </dl>
+					<dl>
+						<dt class="assignfast"><a href="http://experimental.worldcat.org/fast/assignfast/">assignFAST</a></dt>
+						<dd>A Web service that automates the manual selection of FAST Subjects based on autosuggest technology.</dd>
+					</dl>
+                 
+                    
+                </div>
+            </div><!-- col2 -->
+        </div><!-- two -->
+    </div><!-- footer -->
+</div><!-- mainbody -->
+
+</body>
+</html>
