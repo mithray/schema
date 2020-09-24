@@ -1,4 +1,5 @@
 const fs = require('fs')
+const merge = require('deepmerge')
 const path = require('path')
 var pug = require('pug')
 var parser = require('fast-xml-parser')
@@ -64,7 +65,7 @@ function toArray(obj){
   return arr
 }
 async function getJsonldBlock(details, options){
-  details = _.merge(default_details, details)
+  details = merge(default_details, details)
   availableProperties = getAvailableProperties(details)
   const id = details['@context'] + '/' + details['@type']
   const schema = getSchema(id)
@@ -93,8 +94,12 @@ async function getJsonldBlock(details, options){
   return jsonld
 }
 async function getHtmlBlock(jsObj, options){
-  jsObj = _.merge(default_details, jsObj)
+      console.log('default_details')
+      console.log(default_details)
+  jsObj = merge(default_details, jsObj)
   obj = await getJsonldBlock(jsObj, {wrap: false})
+      console.log('obj')
+      console.log(obj)
   const arr = toArray(jsObj)
   schemaHtmlTemplatePath = path.join(__dirname, 'components', obj['@type'] + '.pug')
   try{
@@ -116,12 +121,14 @@ async function getHtmlBlock(jsObj, options){
     value = obj[keys[i]]
       console.log(value)
     if(typeof value === 'object'){
-      obj[keys[i]] =  getHtmlBlock(value)
-//      console.log(obj[keys[i]])
+      console.log('1----obj[keys[i]]')
+      console.log(obj[keys[i]])
+      obj[keys[i]] =  await getHtmlBlock(value)
+      console.log('2----obj[keys[i]]')
+      console.log(obj[keys[i]])
     }
-/*
-*/
   }
+      console.log(obj)
   const htmlstr = await pug.render(fdata,{arr,obj})
 //  console.log(htmlstr)
   return htmlstr
