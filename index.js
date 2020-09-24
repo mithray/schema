@@ -93,6 +93,7 @@ async function getJsonldBlock(details, options){
   return jsonld
 }
 async function getHtmlBlock(jsObj, options){
+  jsObj = _.merge(default_details, jsObj)
   obj = await getJsonldBlock(jsObj, {wrap: false})
   const arr = toArray(jsObj)
   schemaHtmlTemplatePath = path.join(__dirname, 'components', obj['@type'] + '.pug')
@@ -105,9 +106,25 @@ async function getHtmlBlock(jsObj, options){
 //console.log('schemaHtmlTemplateExists')
 //console.log(schemaHtmlTemplateExists)
   const fdata = fs.readFileSync(schemaHtmlTemplatePath,'utf8')
+  
+//console.log(arr)
+//console.log(obj)
 
-  const htmlstr = pug.render(fdata,{arr,obj})
-  console.log(htmlstr)
+  const keys = Object.keys(obj)
+  const values = Object.values(obj)
+  for (let i = 0; i < arr.length; i++) {
+    value = obj[keys[i]]
+      console.log(value)
+    if(typeof value === 'object'){
+      obj[keys[i]] =  getHtmlBlock(value)
+//      console.log(obj[keys[i]])
+    }
+/*
+*/
+  }
+  const htmlstr = await pug.render(fdata,{arr,obj})
+//  console.log(htmlstr)
+  return htmlstr
 }
 
 function getAllBlocks(){}
