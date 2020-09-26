@@ -1,4 +1,12 @@
 div(itemscope itemtype="https://schema.org/Organization")
-  div(itemprop="name")= data.name
-  div(itemprop="address" itemscope itemtype="https://schema.org/PostalAddress")
+  h1(itemprop="name")
+    a(href="#{data.url}" itemprop="url")= data.name
+  div Contact Details
+  div(itemprop="address" itemscope itemtype="https://schema.org/PostalAddress") data.PostalAddress
+  span(itemprop="telephone") data.telephone
+  span(itemprop="faxNumber") data.faxNumber
+  span(itemprop="email") data.email
+  span(itemprop="alumni") data.alumni
+  div(itemprop="sponsor") data.sponsor
+  div(itemprop="member" itemtype="https://schema.org/Person") data.Person
 
